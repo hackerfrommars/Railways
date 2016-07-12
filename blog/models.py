@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from django.shortcuts import get_object_or_404
 
 class Post(models.Model):
     author = models.ForeignKey('auth.User')
@@ -17,3 +17,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    author = models.CharField(max_length=30, default = 'anonymous')
+    post = models.ForeignKey(Post, default=1)
+    text = models.TextField()
+    created_date = models.DateTimeField(default = timezone.now)
+
+    def __str__(self):
+        return self.text

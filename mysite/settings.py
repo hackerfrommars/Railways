@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+NORECAPTCHA_SITE_KEY = '6LfquyQTAAAAAMfQw9QvUFXFLYyk7Xz29qnAUPlX'
+NORECAPTCHA_SECRET_KEY = '6LfquyQTAAAAAFPr-S46ALE8z8e2JInZBR5sHS0q'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+    'blog',
+    'nocaptcha_recaptcha'
 ]
 
 MIDDLEWARE_CLASSES = [

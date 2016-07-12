@@ -13,4 +13,30 @@
         <h1>{{ post.title }}</h1>
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
+    <h2>New Comment</h2>
+    <form method="POST" class="comment-form">{% csrf_token %}
+        <!-- {{ form.as_p }} -->
+        <input type="text" name="author" value="" id = 'author'><br>
+        <input type="text" name="text" value="" id = 'text'>
+
+        <!-- <div class="g-recaptcha" data-sitekey="6LfquyQTAAAAAMfQw9QvUFXFLYyk7Xz29qnAUPlX"></div> -->
+        <br/>
+
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+    <br>
+    <hr>
+    <h2>Comments</h2>
+
+  {% for comment in comments %}
+    <div class="comment">
+        <div class="date">
+            {{ comment.created_date }}
+        </div>
+        <span id = 'comment-name'> by: {{ comment.author }}</span>
+        <p>{{ comment.text|linebreaksbr }}</p>
+    </div>
+    <hr>
+  {% endfor %}
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"/> -->
 {% endblock %}
