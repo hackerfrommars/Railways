@@ -1,5 +1,5 @@
 from django import forms
-from nocaptcha_recaptcha.fields import NoReCaptchaField
+# from nocaptcha_recaptcha.fields import NoReCaptchaField
 from .models import Post, Comment
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -11,7 +11,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        captcha = NoReCaptchaField()
+        # captcha = NoReCaptchaField()
         fields = ('title', 'text',)
 
 class CommentForm(forms.ModelForm):
