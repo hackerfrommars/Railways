@@ -1,5 +1,4 @@
 from django import forms
-# from nocaptcha_recaptcha.fields import NoReCaptchaField
 from .models import Post, Comment
 from django.conf import settings
 from django.utils.translation import ugettext as _
