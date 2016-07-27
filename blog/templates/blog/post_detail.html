@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-
+{% load static %}
 {% block content %}
     <div class="post">
         {% if post.published_date %}
@@ -18,25 +18,31 @@
         <!-- {{ form.as_p }} -->
         <input type="text" name="author" value="" id = 'author'><br>
         <input type="text" name="text" value="" id = 'text'>
+        <input type="text" name="pk" id='pk' value="{{ post.pk }}" hidden="">
+        <div class="g-recaptcha" data-sitekey="6LejKCYTAAAAAEOtr81cC8AyKmrFHOET43APcdZ7"></div>
+        <!-- <br/> -->
 
-        <!-- <div class="g-recaptcha" data-sitekey="6LfquyQTAAAAAMfQw9QvUFXFLYyk7Xz29qnAUPlX"></div> -->
-        <br/>
-
-        <button type="submit" class="save btn btn-default">Save</button>
+        <input type='button' id='create_comment' class="save btn btn-default" value='Save'>
     </form>
     <br>
     <hr>
     <h2>Comments</h2>
 
-  {% for comment in comments %}
+      <div id='comments'>
+        {% include 'blog/comment.html' %}
+      </div>
+
+  <!-- {% for comment in comments %}
     <div class="comment">
         <div class="date">
             {{ comment.created_date }}
         </div>
         <span id = 'comment-name'> by: {{ comment.author }}</span>
-        <p>{{ comment.text|linebreaksbr }}</p>
+        <p>{{ comment.text|linebreaksbr }}</p><br>
+        <span style='border:1px solid black' id = 'like_count'>{{ comment.like }}</span>{% csrf_token %}
+        <button type="button" id = 'likes' data-comid=" {{ comment.id }} " name="button"> Upvote</button>
     </div>
     <hr>
-  {% endfor %}
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"/> -->
+  {% endfor %} -->
+
 {% endblock %}

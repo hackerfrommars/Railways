@@ -29,8 +29,11 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-NORECAPTCHA_SITE_KEY = '6LfquyQTAAAAAMfQw9QvUFXFLYyk7Xz29qnAUPlX'
-NORECAPTCHA_SECRET_KEY = '6LfquyQTAAAAAFPr-S46ALE8z8e2JInZBR5sHS0q'
+GOOGLE_RECAPTCHA_SITE_KEY = '6LejKCYTAAAAAEOtr81cC8AyKmrFHOET43APcdZ7'
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LejKCYTAAAAADMFbVQTUtsRy5O__CofJNjLyWBx'
+
+NORECAPTCHA_SITE_KEY = '6LejKCYTAAAAAEOtr81cC8AyKmrFHOET43APcdZ7'
+NORECAPTCHA_SECRET_KEY = '6LejKCYTAAAAADMFbVQTUtsRy5O__CofJNjLyWBx'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -67,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blog.context_processors.recaptcha',
             ],
         },
     },

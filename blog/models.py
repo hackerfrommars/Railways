@@ -23,6 +23,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, default=1)
     text = models.TextField()
     created_date = models.DateTimeField(default = timezone.now)
+    like = models.IntegerField(default = 0)
 
     def __str__(self):
         return self.text

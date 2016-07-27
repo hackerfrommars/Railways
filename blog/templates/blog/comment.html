@@ -1,0 +1,12 @@
+{% for comment in comments %}
+  <div class="comment">
+      <div class="date">
+          {{ comment.created_date }}
+      </div>
+      <span id = 'comment-name'> by: <b> {{ comment.author }} </b></span> <br>
+      <p>{{ comment.text|linebreaksbr }}</p><br>
+      <span style='border:1px solid black' id = 'like_count'>{{ comment.like }}</span>{% csrf_token %}
+      <button type="button" id = 'likes' data-comid=" {{ comment.id }} " name="button"> Upvote</button>
+  </div>
+  <hr>
+{% endfor %}
