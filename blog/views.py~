@@ -48,8 +48,7 @@ def post_list(request):
 	br.set_handle_referer(True)
 	br.set_handle_refresh(True)
 	br.set_handle_equiv(True)
-	br.addheaders = [('user-agent', '   Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.3) Gecko/20100423 Ubuntu/10.04 (lucid) Firefox/3.6.3'),
-('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')]
+	br.addheaders = [('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'),('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q‌​=0.8'),('Accept-Char‌​set', 'ISO-8859-1,utf-8;q=0.7,*;q=0.3'),('Accept-Encoding', 'none'),('Accept-Language', 'en-US,en;q=0.8'),('Connection', 'keep-alive')]
 	url = 'http://railways.kz/'
 	br.open(url)
 	br.select_form(nr=1)
