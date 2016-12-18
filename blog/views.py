@@ -14,6 +14,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.core import serializers
 import json
+from django.template import RequestContext
 
 # from django_recaptcha_field import create_form_subclass_with_recaptcha
 # from recaptcha import RecaptchaClient
@@ -78,7 +79,7 @@ def post_list(request):
 	res += "]}"	
 
 
-	return HttpResponse(res)
+	return HttpResponse(res,RequestContext(request, {}))
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
