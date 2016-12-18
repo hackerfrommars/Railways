@@ -43,7 +43,7 @@ def post_list(request):
 	br = mechanize.Browser()
 	br.set_cookiejar(cj)
 
-	br.set_handle_robots(True)
+	br.set_handle_robots(False)
 	br.set_handle_referer(False)
 	br.set_handle_refresh(False)
 	br.addheaders = [('User-agent', 'Firefox')]
