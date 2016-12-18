@@ -1,18 +1,85 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+import mechanize
+import sys
+from bs4 import BeautifulSoup
+
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import render_to_response
 from .models import Post, Comment
 from django.utils import timezone
 from .forms import PostForm, CommentForm
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.core import serializers
 import json
+
 # from django_recaptcha_field import create_form_subclass_with_recaptcha
 # from recaptcha import RecaptchaClient
 # Create your views here.
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
+	if request.method == "POST": 
+		from_station = request.POST.get("from_station", "")
+		to_station = request.POST.get("to_station", "")
+		date = request.POST.get("date", "")
+	elif request.method == "GET" and request.GET.get("from_station"): 
+		from_station = request.GET["from_station"]
+		to_station = request.GET["to_station"]
+		date = request.GET["date"]		
+	else:
+		from_station = "АСТАНА" 
+		to_station = "АЛМА АТА 1"
+		date = "31.12.2016"
+
+	res = ""	
+
+	reload(sys)
+	sys.setdefaultencoding('utf-8')
+
+	cj = mechanize.CookieJar()
+
+	br = mechanize.Browser()
+	br.set_cookiejar(cj)
+
+	br.set_handle_robots(True)
+	br.set_handle_referer(False)
+	br.set_handle_refresh(False)
+	br.addheaders = [('User-agent', 'Firefox')]
+
+	url = 'http://railways.kz/'
+	br.open(url)
+	br.select_form(nr=1)
+	br.form['FROM_STATION'] = from_station
+	br.form['TO_STATION'] = to_station
+	br.form['DATE'] = date
+	f = br.submit()
+	soup = BeautifulSoup(f.read())
+
+	res = res + from_station + " => " + to_station + " :: " + date + " :: "
+	res = "{ 'res': [{'from_station': '" + from_station + "', 'to_station': '" + to_station + "', 'date': '" + date + "'}" 
+
+	path = soup.find_all("a", {"class" : "link link-location jsTooltip"})
+	time_from = soup.find_all("span", {"class" : "time-from"})
+	time_to = soup.find_all("span", {"class" : "time-to"})
+	second_class = soup.find_all("td", {"data-wagon-type" : "second-class"})
+	compartment = soup.find_all("td", {"data-wagon-type" : "compartment"})
+	luxury = soup.find_all("td", {"data-wagon-type" : "luxury"})	
+
+	for i in range(len(path)):
+		res += ", {'path': '" + path[i].text[1:] + "', "
+		res += "'time_from': '" + time_from[i].text + "', "
+		res += "'time_to': '" + time_to[i].text + "', "
+		res += "'price_luxury': '" + luxury[i].text + "', " 		
+		res += "'price_compartment': '" + compartment[i].text + "', "
+		res += "'price_second': '" + second_class[i].text + "'}"
+	
+	res += "]}"	
+
+
+	return HttpResponse(res)
+
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = Comment.objects.filter(post = post).order_by('created_date')
