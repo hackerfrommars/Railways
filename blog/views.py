@@ -47,6 +47,7 @@ def post_list(request):
 	br.set_handle_referer(False)
 	br.set_handle_refresh(False)
 	br.addheaders = [('User-agent', 'Firefox')]
+	br.addheaders = [('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')]
 
 	url = 'http://railways.kz/'
 	br.open(url)
