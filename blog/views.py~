@@ -29,10 +29,6 @@ def post_list(request):
 		from_station = request.GET["from_station"]
 		to_station = request.GET["to_station"]
 		date = request.GET["date"]		
-	else:
-		from_station = "АСТАНА" 
-		to_station = "АЛМА АТА 1"
-		date = "31.12.2016"
 
 	res = ""	
 
