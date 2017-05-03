@@ -21,18 +21,15 @@ from django.template import RequestContext
 # Create your views here.
 
 def post_list(request):
-	if request.method == "POST": 
-		from_station = request.POST.get("from_station", "")
-		to_station = request.POST.get("to_station", "")
-		date = request.POST.get("date", "")
-	elif request.method == "GET" and request.GET.get("from_station"): 
+#	elif request.method == "GET" and request.GET.get("from_station"): 
+	if request.method == "GET" and 'from_station' in request.GET: 
 		from_station = request.GET["from_station"]
 		to_station = request.GET["to_station"]
 		date = request.GET["date"]		
 	else:
 		from_station = "АСТАНА" 
-		to_station = "АЛМА АТА 1"
-		date = "31.12.2016"
+		to_station = "Туркестан"
+		date = "25.05.2017"
 
 	res = ""	
 
@@ -60,26 +57,36 @@ def post_list(request):
 
 	res = res + from_station + " => " + to_station + " :: " + date + " :: "
 	res = "{ 'res': [{'from_station': '" + from_station + "', 'to_station': '" + to_station + "', 'date': '" + date + "'}" 
-
+	result = {}	
 	path = soup.find_all("a", {"class" : "link link-location jsTooltip"})
 	time_from = soup.find_all("span", {"class" : "time-from"})
 	time_to = soup.find_all("span", {"class" : "time-to"})
 	second_class = soup.find_all("td", {"data-wagon-type" : "second-class"})
 	compartment = soup.find_all("td", {"data-wagon-type" : "compartment"})
 	luxury = soup.find_all("td", {"data-wagon-type" : "luxury"})	
-
+	result["from_station"] = from_station
+	result["to_station"] = to_station
+	result["total"] = len(path)
 	for i in range(len(path)):
+		temp = {}						
+		temp["path"] = "'" + path[i].text[1:] + "'"
+		
+		temp["time_from"] = time_from[i].text.strip()
+		temp["time_to"] = time_to[i].text.strip()
+		temp["price_luxury"] = luxury[i].text.strip()
+		temp["price_compartment"] = compartment[i].text.strip()
+		temp["price_second"] = second_class[i].text.strip()
+		result[(i + 1)] = temp
+		print(temp["path"])
+
 		res += ", {'path': '" + path[i].text[1:] + "', "
 		res += "'time_from': '" + time_from[i].text + "', "
 		res += "'time_to': '" + time_to[i].text + "', "
 		res += "'price_luxury': '" + luxury[i].text + "', " 		
 		res += "'price_compartment': '" + compartment[i].text + "', "
 		res += "'price_second': '" + second_class[i].text + "'}"
-	
 	res += "]}"	
-
-
-	return HttpResponse(res)
+	return HttpResponse(json.dumps(result).encode('utf-8'))
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -180,3 +187,7 @@ def load_comment(request):
     return render(request, 'blog/comment.html', {
         'comments' : comments
     })
+
+
+
+
